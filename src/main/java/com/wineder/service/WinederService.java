@@ -3,8 +3,8 @@ package com.wineder.service;
 import com.wineder.domain.WinePlace;
 import com.wineder.dto.WinePlaceRequest;
 import com.wineder.dto.WinePlaceResponse;
+import com.wineder.exception.PlaceNotFoundException;
 import com.wineder.repository.WinederRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +49,7 @@ public class WinederService {
     public WinePlaceResponse findById(Long id) {
 
         WinePlace winePlace = winederRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당 장소가 없습니다: " + id));
+                .orElseThrow(() -> new PlaceNotFoundException(id));
         return WinePlaceResponse.fromEntity(winePlace);
     }
 }
