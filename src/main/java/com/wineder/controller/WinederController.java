@@ -3,6 +3,7 @@ package com.wineder.controller;
 import com.wineder.domain.WinePlace;
 import com.wineder.dto.WinePlaceRequest;
 import com.wineder.service.WinederService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class WinederController {
     }
 
     @GetMapping
-    public List<WinePlace> getAll() {
+    public List<WinePlace> getAllPlaces() {
         return winederService.getAll();
     }
 }
