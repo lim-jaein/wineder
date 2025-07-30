@@ -7,8 +7,8 @@ import com.wineder.exception.PlaceNotFoundException;
 import com.wineder.repository.WinederRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,13 +39,13 @@ public class WinederService {
 
         WinePlace saved = winederRepository.save(winePlace);
 
-        return WinePlaceResponse.fromEntity(saved);
+        return WinePlaceResponse.from(saved, 0.0, 0.0);
     }
 
     public List<WinePlaceResponse> findAll() {
 
         return winederRepository.findAll().stream()
-                .map(WinePlaceResponse::fromEntity)
+                .map(place -> WinePlaceResponse.from(place, 0.0, 0.0))
                 .collect(Collectors.toList());
     }
 
@@ -53,13 +53,22 @@ public class WinederService {
 
         WinePlace winePlace = winederRepository.findById(id)
                 .orElseThrow(() -> new PlaceNotFoundException(id));
-        return WinePlaceResponse.fromEntity(winePlace);
+        return WinePlaceResponse.from(winePlace, 0.0, 0.0);
     }
 
     public List<WinePlaceResponse> searchByPrice(Integer min, Integer max) {
 
         return winederRepository.findByPriceRange(min, max).stream()
-                .map(WinePlaceResponse::fromEntity)
+                .map(place -> WinePlaceResponse.from(place, 0.0, 0.0))
+                .collect(Collectors.toList());
+    }
+
+    public List<WinePlaceResponse> findAllSortedByDistance(Double userLat, Double userLng) {
+        List<WinePlace> places = winederRepository.findAll();
+
+        return places.stream()
+                .map(place -> WinePlaceResponse.from(place, 0.0, 0.0))
+                .sorted(Comparator.comparingDouble(WinePlaceResponse::getDuration))
                 .collect(Collectors.toList());
     }
 }

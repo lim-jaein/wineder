@@ -1,6 +1,7 @@
 package com.wineder.dto;
 
 import com.wineder.domain.WinePlace;
+import com.wineder.util.DistanceUtil;
 import lombok.*;
 
 @Getter
@@ -19,16 +20,39 @@ public class WinePlaceResponse {
     private String instaUrl;
     private String website;
 
-    public static WinePlaceResponse fromEntity(WinePlace place) {
-        return new WinePlaceResponse(
-                place.getId(),
-                place.getName(),
-                place.getAddress(),
-                place.getMinPrice(),
-                place.getMaxPrice(),
-                place.getPhone(),
-                place.getInstaUrl(),
-                place.getWebsite()
-        );
+    private double distance;    // 실시간 거리정보
+    private int duration;       // 도보 소요시간
+
+    @Builder
+    private WinePlaceResponse(Long id, String name, String address, int minPrice, int maxPrice, String phone,
+                              String instaUrl, String website, double distance, int duration) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
+        this.phone = phone;
+        this.instaUrl = instaUrl;
+        this.website = website;
+        this.distance = distance;
+        this.duration = duration;
+    }
+
+    public static WinePlaceResponse from(WinePlace place, double userLat, double userLng) {
+        double distance = DistanceUtil.calculateDistance(userLat, userLng, place.getLat(), place.getLng());
+        int duration = DistanceUtil.estimateWalkingDuration(distance);
+
+        return WinePlaceResponse.builder()
+                .id(place.getId())
+                .name(place.getName())
+                .address(place.getAddress())
+                .minPrice(place.getMinPrice())
+                .maxPrice(place.getMaxPrice())
+                .phone(place.getPhone())
+                .instaUrl(place.getInstaUrl())
+                .website(place.getWebsite())
+                .distance(distance)
+                .duration(duration)
+                .build();
     }
 }
