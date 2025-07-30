@@ -38,4 +38,11 @@ public class WinederController {
     public WinePlaceResponse getPlace(@PathVariable Long id) {
         return winederService.findById(id);
     }
+
+    @GetMapping("/search")
+    public List<WinePlaceResponse> searchByPrice(
+            @RequestParam(required = false) Integer min,
+            @RequestParam(required = false) Integer max) {
+        return winederService.searchByPrice(min, max);
+    }
 }

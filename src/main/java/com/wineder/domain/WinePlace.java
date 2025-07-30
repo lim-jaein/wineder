@@ -22,8 +22,13 @@ public class WinePlace {
 
     private String name;        // 이름
     private String address;     // 주소
+
     private Double lng;         // 위도
     private Double lat;         // 경도
+
+    private Integer minPrice;   // 와인 최소 가격
+    private Integer maxPrice;   // 와인 최대 가격
+
     private String phone;       // 전화번호
     private String instaUrl;    // 인스타그램 링크
     private String website;     // 공식사이트 링크

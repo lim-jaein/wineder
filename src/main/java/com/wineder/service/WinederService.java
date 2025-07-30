@@ -7,6 +7,7 @@ import com.wineder.exception.PlaceNotFoundException;
 import com.wineder.repository.WinederRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +30,8 @@ public class WinederService {
                 .address(request.getAddress())
                 .lat(request.getLat())
                 .lng(request.getLng())
+                .minPrice(request.getMinPrice())
+                .maxPrice(request.getMaxPrice())
                 .phone(request.getPhone())
                 .instaUrl(request.getInstaUrl())
                 .website(request.getWebsite())
@@ -51,5 +54,12 @@ public class WinederService {
         WinePlace winePlace = winederRepository.findById(id)
                 .orElseThrow(() -> new PlaceNotFoundException(id));
         return WinePlaceResponse.fromEntity(winePlace);
+    }
+
+    public List<WinePlaceResponse> searchByPrice(Integer min, Integer max) {
+
+        return winederRepository.findByPriceRange(min, max).stream()
+                .map(WinePlaceResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 }

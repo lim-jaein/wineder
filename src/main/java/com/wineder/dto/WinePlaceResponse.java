@@ -8,8 +8,13 @@ import lombok.*;
 public class WinePlaceResponse {
 
     private Long id;
+
     private String name;
     private String address;
+
+    private Integer minPrice;
+    private Integer maxPrice;
+
     private String phone;
     private String instaUrl;
     private String website;
@@ -19,6 +24,8 @@ public class WinePlaceResponse {
                 place.getId(),
                 place.getName(),
                 place.getAddress(),
+                place.getMinPrice(),
+                place.getMaxPrice(),
                 place.getPhone(),
                 place.getInstaUrl(),
                 place.getWebsite()
