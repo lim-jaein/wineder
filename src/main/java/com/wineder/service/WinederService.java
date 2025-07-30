@@ -3,6 +3,7 @@ package com.wineder.service;
 import com.wineder.domain.WinePlace;
 import com.wineder.dto.WinePlaceRequest;
 import com.wineder.repository.WinederRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
